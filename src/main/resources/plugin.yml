@@ -1,0 +1,10 @@
+name: GeyserColorReplacer
+version: '1.0-SNAPSHOT'
+main: me.zimzaza4.geysercolorreplacer.GeyserColorReplacer
+api-version: '1.18'
+authors: [ zimzaza4 ]
+depend: [ packetevents, floodgate ]
+commands:
+  geysercolorreplacer:
+    aliases: ["gcp"]
+    permission: geysercolorreplacer.admin

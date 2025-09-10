@@ -11,8 +11,6 @@ import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
 import com.github.retrooper.packetevents.protocol.item.ItemStack;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.server.*;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import me.zimzaza4.geysercolorreplacer.GeyserColorReplacer;
 import net.kyori.adventure.text.Component;
 
@@ -79,7 +77,7 @@ public class TextListener implements PacketListener {
             for (ItemStack item : items.getItems()) {
                 processItem(item);
             }
-            items.getCarriedItem().ifPresent(itemStack -> processItem(itemStack));
+            items.getCarriedItem().ifPresent(this::processItem);
             items.write();
         }
         if (event.getPacketType() == PacketType.Play.Server.SET_SLOT) {
@@ -100,6 +98,16 @@ public class TextListener implements PacketListener {
                 }
             }
             metadata.write();
+        }
+        if (event.getPacketType() == PacketType.Play.Server.SCOREBOARD_OBJECTIVE) {
+            WrapperPlayServerScoreboardObjective objective = new WrapperPlayServerScoreboardObjective(event);
+            objective.setDisplayName(replaceColor(objective.getDisplayName()));
+            objective.write();
+        }
+        if (event.getPacketType() == PacketType.Play.Server.UPDATE_SCORE) {
+            WrapperPlayServerUpdateScore updateScore = new WrapperPlayServerUpdateScore(event);
+            updateScore.setEntityDisplayName(replaceColor(updateScore.getEntityDisplayName()));
+            updateScore.write();
         }
     }
 
